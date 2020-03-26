@@ -1,39 +1,30 @@
 #include "FileIO.h"
 #include <iostream>
 
+//Driver to implement assignment 3
 int main(int argc, char**argv) {
     string filePath = "";
     if (argc > 1) {
       filePath = argv[1];
     }
 
+    //boolean variable to check if the program should exit or not (if source code has an error, it will exit)
     bool error = false;
 
-    //ISSUE: I don't think I'm doing the template class stuff correctly, so we need to figure out how to fix this
     while (error != true) {
-      string data = "";
-      while (data != "char" || data != "int") {
-        cout << "What data type would you like to use? Enter 'char' or 'int'." << endl;
-        cin >> data;
-        if (data == "char") {
-          FileIO<char> *file = new FileIO<char>(filePath);
-          error = file->readInFile();
-          delete file;
-          break;
-        } else if (data == "int") {
-          FileIO<int> *file = new FileIO<int>(filePath);
-          error = file->readInFile();
-          delete file;
-          break;
-        } else {
-          cout << "Error. Input either the char or int data types." << endl;
-        }
-      }
+      //instantiating the FileIO object to be of a type char (not  a template anymore)
+      FileIO<char> *file = new FileIO<char>(filePath);
+      error = file->readInFile();
+      delete file;
       if (error == true) {
         break;
       } else {
-        cout << "Enter a file path for another source code you want to check. " << endl;
+        //if the program didn't have errors, the user can check another file
+        cout << "Enter a file path for another source code you want to check. If you want to quit, enter 'exit'." << endl;
         cin >> filePath;
+        if (filePath == "exit") {
+          break;
+        }
       }
     }
   return 0;
