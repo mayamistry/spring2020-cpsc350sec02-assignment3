@@ -28,7 +28,7 @@ class GenStack {
 
 template <class T>
 GenStack<T>::GenStack() {
-  myArray = new char[128];
+  myArray = new T[128];
   mSize = 128;
   top = -1; // -1 turnd into the 0
 }
@@ -36,7 +36,7 @@ GenStack<T>::GenStack() {
 //overloaded constructor
 template <class T>
 GenStack<T>::GenStack(int maxSize) {
-  myArray = new char[maxSize];
+  myArray = new T[maxSize];
   mSize = maxSize;
   top = -1; //could do 0 or -1
 }
