@@ -20,7 +20,7 @@ int main(int argc, char**argv) {
         break;
       } else {
         //if the program didn't have errors, the user can check another file
-        cout << "Enter a file path for another source code you want to check. If you want to quit, enter 'exit'." << endl;
+        cout << "Your file was completely correct! Enter a file path for another source code you want to check. If you want to quit, enter 'exit'." << endl;
         cin >> filePath;
         if (filePath == "exit") {
           break;

@@ -7,7 +7,7 @@ class FileIO {
   public:
     FileIO();
     FileIO(string name);
-    //no destructor here because we need it for the other classes
+    ~FileIO();
     void setFileName(string name);
     string getFileName();
     bool readInFile();
@@ -28,6 +28,12 @@ FileIO<T>::FileIO(){
 template <class T>
 FileIO<T>::FileIO(string name) {
   m_fileName = name;
+}
+
+//destructor
+template <class T>
+FileIO<T>::~FileIO(){
+ //nothing gets deleted because no pointers are being created
 }
 
 //Setter method for file name
