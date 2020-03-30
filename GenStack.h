@@ -19,6 +19,9 @@ class GenStack {
     bool isEmpty();
     bool isFull();
 
+    int getSize();
+    GenStack* allocateMoreMemory();
+
     int top; //index of the top element --> used as a pointer
     int mSize;
 
@@ -28,8 +31,8 @@ class GenStack {
 
 template <class T>
 GenStack<T>::GenStack() {
-  myArray = new T[128];
-  mSize = 128;
+  myArray = new T[1000];
+  mSize = 1000;
   top = -1; // -1 turnd into the 0
 }
 
@@ -82,4 +85,16 @@ bool GenStack<T>::isEmpty() {
 template <class T>
 bool GenStack<T>::isFull() {
   return (top == mSize - 1);
+}
+
+template <class T>
+int GenStack<T>::getSize() {
+  return mSize;
+}
+
+template <class T>
+GenStack<T>* GenStack<T>::allocateMoreMemory() {
+  int newSize = mSize * 2;
+  GenStack<T> *newStack = new GenStack<T>(newSize);
+  return newStack;
 }

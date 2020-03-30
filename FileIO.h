@@ -11,6 +11,10 @@ class FileIO {
     void setFileName(string name);
     string getFileName();
     bool readInFile();
+
+    //allocate more memory to lineCountValues
+    int* allocateMoreMemory(int* curr, int currentSize);
+
   private:
     string m_fileName;
     ifstream inFS;
@@ -56,40 +60,22 @@ bool FileIO<T>::readInFile() {
 
   if (!inFS.is_open()) {
     cout << "Could not open file. Start program over." << endl;
-    return false;
+    return true;
   }
 
   string currentLine = "";
   string delimiters = "";
-  int lineCount = 0;
-  int delimiterCount = 0;
 
-  //read in file and put all of the delimiters onto a string
-  while (!inFS.eof()) {
-    inFS >> currentLine;
-    if (!inFS.fail()) {
-      lineCount++;
-      //take in the delimiters found and put it into a string
-      for (int i = 0; i < currentLine.size(); ++i) {
-        char currentChar = currentLine[i];
-        if (currentChar == '{' || currentChar == '}' || currentChar == '[' || currentChar == ']' || currentChar == '(' || currentChar == ')' ) {
-          delimiters += currentChar;
-          delimiterCount++;
-        }
-      }
-    }
-  }
-
-  inFS.close();
-
-  //need to fill in the array with the line values for source code
-  inFS.open(m_fileName);
+  GenStack<T> *stack = new GenStack<T>(); //creates generic stack of size 1000 (default size)
+  int stackSize = stack->getSize();
+  int delimiterCount = 0; //keeps track of count as source file is being read
 
   //this array will keep track of the lines in the file that have delimiters
   int *lineCountValues = new int[delimiterCount];
   int tempLine = 0;
+  int j = 0; //index of lineCountValues array
 
-  int j = 0; //index tracker for line count array
+  //read in file and put all of the delimiters onto a string
   while (!inFS.eof()) {
     getline(inFS, currentLine);
     if (!inFS.fail()) {
@@ -97,7 +83,15 @@ bool FileIO<T>::readInFile() {
       //take in the delimiters found and put it into a string
       for (int i = 0; i < currentLine.size(); ++i) {
         char currentChar = currentLine[i];
+        //need to check if more memory needs to get allocated or not before performing delimiter actions
+        if (delimiterCount == (stackSize - 1)) {
+          lineCountValues = allocateMoreMemory(lineCountValues, delimiterCount);
+          stack = stack->allocateMoreMemory();
+          stackSize = stack->getSize();
+        }
         if (currentChar == '{' || currentChar == '}' || currentChar == '[' || currentChar == ']' || currentChar == '(' || currentChar == ')' ) {
+          delimiters += currentChar;
+          ++delimiterCount;
           lineCountValues[j] = tempLine;
           ++j;
         }
@@ -107,11 +101,22 @@ bool FileIO<T>::readInFile() {
 
   inFS.close();
 
-  //Create the stack and delimiter objects using all of the information from above
-  GenStack<T> *stack = new GenStack<T>(delimiterCount);
-  Delimiter<T>*d = new Delimiter<T>(stack, delimiterCount, delimiters, lineCountValues);
+  //create the delimiter object after getting all of the necessary information
+  Delimiter<T> *d = new Delimiter<T>(stack, delimiterCount, delimiters, lineCountValues);
 
   //run algorithm from delimiter class
   bool errorCheck = d->delimiterCheck();
   return errorCheck;
+}
+
+template <class T>
+int* FileIO<T>::allocateMoreMemory(int* curr, int currentSize) {
+  int newSize = currentSize * 2;
+  int* newArray = new int[newSize];
+  for (int i = 0; i < currentSize; ++i) {
+    newArray[i] = curr[i];
+    cout << newArray[i] << " ";
+  }
+
+  return newArray;
 }

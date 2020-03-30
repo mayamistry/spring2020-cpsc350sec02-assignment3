@@ -59,6 +59,7 @@ Delimiter<T>::~Delimiter() {
 }
 
 //algorithm method to check if there is an error
+//NOTE: this algorithm will print all errors in code before exiting program
 template <class T>
 bool Delimiter<T>::delimiterCheck() {
   //iterate through the whole array of lines and each delimiter to check for ALL errors
@@ -66,44 +67,32 @@ bool Delimiter<T>::delimiterCheck() {
   for (int i = 0; i < m_count; ++i) {
     m_currentChar = m_delimiters[i];
     cout << "Line " << m_lineValues[i] << ": " << m_currentChar << endl;
-
     //if it's an opening object, push onto the stack
     if (m_currentChar == '{' || m_currentChar == '(' || m_currentChar == '[') {
       m_stack->push(m_currentChar);
     } else {
       //if it's a closing object, then check if it's the right one
       stackChar = m_stack->pop();
-      //if any of these are incorrect, it will print an error message and exit the algorithm
-      switch (stackChar) {
-        case '[':
-          if (m_currentChar != ']') {
-            m_lineError = m_lineValues[i];
-            m_correctChar = ']';
-            m_error = true;
-            printToConsole();
-          }
-          break;
-        case '(':
-          if (m_currentChar != ')') {
-            m_lineError = m_lineValues[i];
-            m_correctChar = ')';
-            m_error = true;
-            printToConsole();
-          }
-          break;
-        case '{':
-          if (m_currentChar != '}') {
-            m_lineError = m_lineValues[i];
-            m_correctChar = '}';
-            m_error = true;
-            printToConsole();
-          }
-          break;
-        default:
-          break;
+      //if any of these are incorrect, it will print an error message
+      if (stackChar == '[' && m_currentChar != ']') {
+        m_lineError = m_lineValues[i];
+        m_correctChar = ']';
+        m_error = true;
+        printToConsole();
+        continue;
+      } else if (stackChar == '(' && m_currentChar != ')') {
+        m_lineError = m_lineValues[i];
+        m_correctChar = ')';
+        m_error = true;
+        printToConsole();
+        continue;
+      } else if (stackChar == '{' && m_currentChar != '}') {
+        m_lineError = m_lineValues[i];
+        m_correctChar = '}';
+        m_error = true;
+        printToConsole();
+        continue;
       }
-      //if it's the right one, then keep going
-      continue;
     }
   }
   cout << "Done!" << endl;
@@ -113,6 +102,6 @@ bool Delimiter<T>::delimiterCheck() {
 //print method to print where and what the error is if it occurs in algorithm
 template <class T>
 void Delimiter<T>::printToConsole() {
-  //cout << "Error: Delimiter is " << m_currentChar << "but expected " << m_correctChar << endl;
+  //cout << "Error: Delimiter is " << m_currentChar << " but expected " << m_correctChar << endl;
   cout << "Error at line " << m_lineError << ". Delimiter is " << m_currentChar << " but expected " << m_correctChar << endl;
 }

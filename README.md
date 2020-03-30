@@ -14,3 +14,4 @@ https://stackoverflow.com/questions/40669254/template-t-class-array
 
 -Worked with Jessie Roux on theory of the assignment (drew outlines and clarified questions we had)
 -Got some help from the SI regarding an error I had for my template classes
+-Office Hours on 3/30: got help from the professor on how to do the memory allocation and figured out how print all errors instead of one
