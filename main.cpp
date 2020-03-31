@@ -3,6 +3,9 @@
 
 //Driver to implement assignment 3
 int main(int argc, char**argv) {
+
+    GenStack<int> *stack = new GenStack<int>(3);
+
     string filePath = "";
     if (argc > 1) {
       filePath = argv[1];

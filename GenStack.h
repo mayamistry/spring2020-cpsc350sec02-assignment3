@@ -1,6 +1,9 @@
 #include <iostream>
 using namespace std;
 
+#include "FullStackException.h"
+#include "EmptyStackException.h"
+
 template <class T>
 class GenStack {
   public:
@@ -9,8 +12,8 @@ class GenStack {
     ~GenStack(); //destructor
 
     //core functions
-    void push(T data); //inserts a new elements into the stack --> pre-incrementation
-    T pop(); //removes and returns the last element of the stack
+    void push(T data) throw (FullStackException); //inserts a new elements into the stack --> pre-incrementation
+    T pop() throw (EmptyStackException); //removes and returns the last element of the stack
     //POP DOES NOT REMOVE, IT JUST CHANGES THE POINTER FOR TOP SOMEWHERE
     //post incrementation
 
@@ -51,24 +54,29 @@ GenStack<T>::~GenStack() {
 }
 
 template <class T>
-void GenStack<T>::push(T data) {
+void GenStack<T>::push(T data) throw (FullStackException) {
   //first check if this is full before attempting to insert
-  if (isFull()) {
-    cout << "Exception: stack is already full." << endl;
-    return;
+  try {
+    if (isFull()) {
+      throw FullStackException("FullStackException: stack is already full");
+    }
+    myArray[++top] = data;
+  } catch (FullStackException* e) {
+    cout << e->getMessage() << endl;
   }
-  myArray[++top] = data;
 }
 
 template <class T>
-T GenStack<T>::pop() {
+T GenStack<T>::pop() throw (EmptyStackException) {
   //check array is empty before removing
   //USE POINTER AND NOT A .
-  if (isEmpty()) {
-    cout << "Exception: stack is already empty." << endl;
-    return '\0';
-  } else {
+  try {
+    if (isEmpty()) {
+      throw EmptyStackException("EmptyStackException: stack is empty already");
+    }
     return myArray[top--];
+  } catch (EmptyStackException* e) {
+    cout << e->getMessage() << endl;
   }
 }
 
