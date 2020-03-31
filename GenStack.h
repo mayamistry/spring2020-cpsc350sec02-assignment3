@@ -1,6 +1,3 @@
-#include <iostream>
-using namespace std;
-
 #include "FullStackException.h"
 #include "EmptyStackException.h"
 
@@ -56,28 +53,20 @@ GenStack<T>::~GenStack() {
 template <class T>
 void GenStack<T>::push(T data) throw (FullStackException) {
   //first check if this is full before attempting to insert
-  try {
-    if (isFull()) {
-      throw FullStackException("FullStackException: stack is already full");
-    }
-    myArray[++top] = data;
-  } catch (FullStackException* e) {
-    cout << e->getMessage() << endl;
+  if (isFull()) {
+    throw FullStackException("FullStackException: stack is already full");
   }
+  myArray[++top] = data;
 }
 
 template <class T>
 T GenStack<T>::pop() throw (EmptyStackException) {
   //check array is empty before removing
   //USE POINTER AND NOT A .
-  try {
-    if (isEmpty()) {
-      throw EmptyStackException("EmptyStackException: stack is empty already");
-    }
-    return myArray[top--];
-  } catch (EmptyStackException* e) {
-    cout << e->getMessage() << endl;
+  if (isEmpty()) {
+    throw EmptyStackException("EmptyStackException: stack is empty already");
   }
+  return myArray[top--];
 }
 
 template <class T>

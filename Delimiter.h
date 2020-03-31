@@ -69,10 +69,18 @@ bool Delimiter<T>::delimiterCheck() {
     cout << "Line " << m_lineValues[i] << ": " << m_currentChar << endl;
     //if it's an opening object, push onto the stack
     if (m_currentChar == '{' || m_currentChar == '(' || m_currentChar == '[') {
-      m_stack->push(m_currentChar);
+      try {
+        m_stack->push(m_currentChar);
+      } catch (FullStackException e) {
+        cout << e.getMessage();
+      }
     } else {
       //if it's a closing object, then check if it's the right one
-      stackChar = m_stack->pop();
+      try {
+        stackChar = m_stack->pop();
+      } catch (EmptyStackException e) {
+        cout << e.getMessage() << endl;
+      }
       //if any of these are incorrect, it will print an error message
       if (stackChar == '[' && m_currentChar != ']') {
         m_lineError = m_lineValues[i];

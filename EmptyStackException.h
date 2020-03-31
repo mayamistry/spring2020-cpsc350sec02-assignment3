@@ -1,6 +1,7 @@
 #include <iostream>
 using namespace std;
 
+//Exception class to see if stack is empty when popping off a stack
 class EmptyStackException {
   public:
     EmptyStackException();
