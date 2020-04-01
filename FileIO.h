@@ -71,7 +71,7 @@ bool FileIO<T>::readInFile() {
   int delimiterCount = 0; //keeps track of count as source file is being read
 
   //this array will keep track of the lines in the file that have delimiters
-  int *lineCountValues = new int[delimiterCount];
+  int *lineCountValues = new int[stackSize];
   int tempLine = 0;
   int j = 0; //index of lineCountValues array
 
@@ -115,7 +115,6 @@ int* FileIO<T>::allocateMoreMemory(int* curr, int currentSize) {
   int* newArray = new int[newSize];
   for (int i = 0; i < currentSize; ++i) {
     newArray[i] = curr[i];
-    cout << newArray[i] << " ";
   }
 
   return newArray;

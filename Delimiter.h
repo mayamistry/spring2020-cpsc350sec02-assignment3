@@ -72,7 +72,7 @@ bool Delimiter<T>::delimiterCheck() {
       try {
         m_stack->push(m_currentChar);
       } catch (FullStackException e) {
-        cout << e.getMessage();
+        cout << e.getMessage() << endl;
       }
     } else {
       //if it's a closing object, then check if it's the right one
